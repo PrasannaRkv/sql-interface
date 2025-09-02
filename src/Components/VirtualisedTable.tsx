@@ -8,13 +8,13 @@ type ColSchema = {
 export default function VirtualizedTable<T extends object>({ rows }: { rows: Array<T> }) {
         const colHeaders = Object.keys(rows?.[0] || {});
         return (
-                <div className="h-[600px] w-full border rounded-xl overflow-hidden">
+                <div className="h-full w-full">
                         <TableVirtuoso
                                 data={rows}
                                 fixedHeaderContent={() => (
-                                        <tr>
+                                        <tr className="bg-background">
                                                 {colHeaders.map((col) => (
-                                                        <th key={col} className="px-4 py-2 text-left bg-gray-100 border-b">
+                                                        <th key={col} className="px-4 py-2 text-left bg-foreground/20 border-b">
                                                                 {col}
                                                         </th>
                                                 ))}
@@ -36,7 +36,7 @@ export default function VirtualizedTable<T extends object>({ rows }: { rows: Arr
                                 components={{
                                         Table: (props) => <table {...props} className="w-full border-collapse table-fixed" />,
                                         TableHead: (props) => <thead {...props} className="sticky top-0 z-10" />,
-                                        TableRow: (props) => <tr {...props} className="hover:bg-gray-50" />,
+                                        TableRow: (props) => <tr {...props} className="hover:bg-foreground/40" />,
                                         TableBody: (props) => <tbody {...props} />,
                                 }}
                         />
