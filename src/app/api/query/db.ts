@@ -1,9 +1,7 @@
 import sqlite3 from "sqlite3";
-import Mock from "./mockData.json";
 import moment from "moment";
-const mockData = [...Mock];
+import { tableName, schema, data } from "./Table/data";
 
-const tableName = 'data';
 let db: sqlite3.Database | null = null;
 let initialized = false;
 
@@ -13,31 +11,15 @@ export function getDB() {
         }
 
         if (!initialized) {
-                initDB();
+                initDB({ tableName, schema, data });
                 initialized = true;
         }
 
         return db;
 }
 
-// Hardcoded schema definition
-const schema = [
-        { name: "id", type: "INTEGER" },
-        { name: "first_name", type: "TEXT" },
-        { name: "last_name", type: "TEXT" },
-        { name: "country", type: "TEXT" },
-        { name: "start_date", type: "DATE" },
-        { name: "end_date", type: "DATE" },
-        { name: "email", type: "TEXT" },
-        { name: "gender", type: "TEXT" },
-        { name: "amount", type: "INTEGER" },
-        { name: "website", type: "TEXT" },
-        { name: "image_url", type: "TEXT" },
-        { name: "is_active", type: "INTEGER" }
-];
-
-function initDB() {
-        if (!Array.isArray(mockData) || mockData.length === 0) {
+function initDB({ tableName, data, schema }: { tableName: string, data: object[], schema: Array<{ name: string, type: string }> }) {
+        if (!Array.isArray(data) || data.length === 0) {
                 return;
         }
 
@@ -53,7 +35,7 @@ function initDB() {
                         `INSERT INTO ${tableName} (${columns.join(",")}) VALUES (${placeholders})`
                 );
 
-                for (const row of mockData) {
+                for (const row of data) {
                         stmt.run(schema.map((c) => {
                                 const name = c.name;
                                 // @ts-ignore-next-line

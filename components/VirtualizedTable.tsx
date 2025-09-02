@@ -1,10 +1,5 @@
 import { TableVirtuoso } from "react-virtuoso";
 
-type ColSchema = {
-        type: string;
-        name: string;
-}
-
 export default function VirtualizedTable<T extends object>({ rows }: { rows: Array<T> }) {
         const colHeaders = Object.keys(rows?.[0] || {});
         return (

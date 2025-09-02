@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import SqlRunnerPage from "./SqlRunner";
+import SqlRunner from "@/components/SqlRunner";
 
 export default function Home() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SqlRunnerPage />
+      <SqlRunner />
     </Suspense>
   );
 }

@@ -3,9 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { debounce } from "@/lib/utils";
 import { useQueryState } from "@/utils/useQueryState";
-import VirtualizedTable from "../Components/VirtualisedTable";
+import VirtualizedTable from "@/components/VirtualizedTable";
+import { Button } from "@/components/ui/button";
+import ChatPane from "@/components/ChatPane";
 
-export default function SqlRunnerPage() {
+export default function SqlRunner() {
         const [results, setResults] = useState([]);
         const [error, setError] = useState<string | null>(null);
 
@@ -30,6 +32,7 @@ export default function SqlRunnerPage() {
 
                         const data = await res.json();
                         if (data.error) {
+                                setResults([])
                                 setError(data.error);
                         } else {
                                 setResults(data.rows);
@@ -47,7 +50,7 @@ export default function SqlRunnerPage() {
 
         return (
                 <div className="px-8 py-4 h-screen flex flex-col gap-4">
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-4">
                                 <h1 className="text-xl font-bold">SQL Runner</h1>
                                 <div className="border rounded overflow-hidden">
                                         <Editor
@@ -63,13 +66,13 @@ export default function SqlRunnerPage() {
                                                 }}
                                         />
                                 </div>
-                                <div>
-                                        <button
+                                <div className="flex gap-2">
+                                        <Button
                                                 onClick={() => runQuery(query)}
-                                                className="bg-blue-600 text-white px-4 py-2 rounded"
                                         >
                                                 Run Query
-                                        </button>
+                                        </Button>
+                                        <ChatPane />
                                 </div>
                         </div>
                         <div className="flex-1 border rounded overflow-hidden">
