@@ -11,9 +11,12 @@ import { Response } from "./ui/ai/response";
 // import { Response } from '@/src/Components/ui/shadcn-io/ai/response';
 
 const useTypingEffect = (text: string, skip = false) => {
-        const [displayed, setDisplayed] = useState("")
+        const [displayed, setDisplayed] = useState(skip ? text : "")
 
         useEffect(() => {
+                if (skip) {
+                        return;
+                }
                 let i = 0
                 const interval = setInterval(() => {
                         setDisplayed(text.slice(0, i))
@@ -21,7 +24,7 @@ const useTypingEffect = (text: string, skip = false) => {
                         if (i > text.length) clearInterval(interval)
                 }, 5)
                 return () => clearInterval(interval)
-        }, [text])
+        }, [text, skip])
 
         return displayed
 }
@@ -37,9 +40,7 @@ export default function ChatPane() {
         const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
         const [input, setInput] = useState("");
         const [loading, setLoading] = useState(false);
-
-
-
+        const [lastMessage, setLastMessage] = useState('');
 
         const sendMessage = async () => {
                 if (!input.trim()) return;
@@ -50,6 +51,7 @@ export default function ChatPane() {
                 setLoading(true);
 
                 try {
+                        setLastMessage('');
                         const res = await fetch("/api/chat", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
@@ -58,6 +60,7 @@ export default function ChatPane() {
 
                         const data = await res.json();
                         setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+                        setLastMessage(data.reply);
                 } catch (err) {
                         setMessages((prev) => [...prev, { role: "assistant", content: "⚠️ Error talking to AI" }]);
                 } finally {
@@ -67,7 +70,9 @@ export default function ChatPane() {
 
         return (
                 <Sheet>
-                        <SheetTrigger asChild>
+                        <SheetTrigger asChild onClick={() => {
+                                setLastMessage('')
+                        }}>
                                 <Button variant="outline">💬 AI SQL Assistant</Button>
                         </SheetTrigger>
                         <SheetContent side="right" className="!w-[800px] !sm:w-full flex flex-col px-4 py-2 sm:!max-w-2xl">
@@ -82,12 +87,12 @@ export default function ChatPane() {
                                         </div>}
                                         <div className="flex flex-col gap-2">
                                                 {messages.map((m, i) => {
-                                                        const isLast = i === messages.length - 1;
+                                                        const isLast = lastMessage === m.content;
                                                         return (
                                                                 <div
                                                                         key={i}
                                                                         className={clsx(
-                                                                                "whitespace-break-spaces",
+                                                                                "whitespace-break-spaces py-4",
                                                                                 m.role == "user" ? "pl-14 text-right text-foreground/50 italic" : "pr-14 text-left"
                                                                         )}
                                                                 >
