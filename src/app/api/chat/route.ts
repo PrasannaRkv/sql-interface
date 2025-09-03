@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { schema, tableName } from "../query/Table/data";
+import { Tables } from "../query/Table"
+
+const getTableInfo = ({ schema, tableName }: { schema: { name: string, type: string }[], tableName: string }) => {
+  return `The table name is "${tableName}". Here is the database schema:
+
+${schema.map((col) => `${col.name}: ${col.type}`).join("\n")}
+
+`
+}
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -8,9 +16,11 @@ const client = new OpenAI({
 
 const SYSTEM_AWARE = `
 You are an assistant that helps write SQL queries.
-The table name is "${tableName}". Here is the database schema:
 
-${schema.map((col) => `${col.name}: ${col.type}`).join("\n")}
+${Tables.map((table, i) => `
+Table ${i}:
+${getTableInfo(table)}
+`).join('\n')}
 
 Only generate valid SQL compatible with SQLite.
 `;

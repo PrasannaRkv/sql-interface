@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 import moment from "moment";
-import * as table1 from "./Table/data";
-import * as table2 from "./Table/filght_data";
+import { Tables } from "./Table";
+
 
 let db: sqlite3.Database | null = null;
 let initialized = false;
@@ -15,8 +15,7 @@ export function getDB() {
                 db!.serialize(() => {
                         db!.run("DROP TABLE IF EXISTS data");
                 });
-                initDB(table1);
-                initDB(table2);
+                Tables.forEach(table => initDB(table));
                 initialized = true;
         }
 
