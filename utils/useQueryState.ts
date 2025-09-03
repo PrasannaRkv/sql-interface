@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 /* 
@@ -17,27 +17,31 @@ const decodeBase64 = (q: string | null) => {
 };
 
 export function useQueryState(key: string, defaultValue: string) {
-
-        const router = useRouter();
+        const pathname = usePathname();
         const searchParams = useSearchParams();
-        const [query, _setQuery] = useState('');
+        const getFromUrl = () =>
+                decodeBase64(searchParams.get(key)) || defaultValue;
+
+        const [query, setLocalQuery] = useState(getFromUrl);
 
         useEffect(() => {
-                const initial = decodeBase64(searchParams.get(key)) || defaultValue;
-                _setQuery(initial);
-        }, [key]);
+                setLocalQuery(getFromUrl());
+        }, [searchParams, key]);
 
-        const setQuery = useCallback((value: string) => {
-                _setQuery(value);
-                const url = new URL(window.location.href);
-                const params = url.searchParams;
-                if (value) {
-                        params.set(key, encodeBase64(value));
-                } else {
-                        params.delete(key);
-                }
-                router.replace(url.pathname + "?" + url.searchParams.toString());
-        }, [key]);
+        const setQuery = useCallback(
+                (value: string) => {
+                        setLocalQuery(value);
+                        const params = new URLSearchParams(searchParams.toString());
+                        if (value) {
+                                params.set(key, encodeBase64(value));
+                        } else {
+                                params.delete(key);
+                        }
+                        const newUrl = `${pathname}?${params.toString()}`;
+                        window.history.pushState({}, "", newUrl);
+                },
+                [key, pathname, searchParams]
+        );
 
-        return { setQuery, query };
+        return { query, setQuery };
 }

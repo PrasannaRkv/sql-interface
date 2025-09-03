@@ -9,6 +9,16 @@ import remarkMath from 'remark-math';
 import { CodeBlock, CodeBlockCopyButton } from './code-block';
 import 'katex/dist/katex.min.css';
 import hardenReactMarkdown from 'harden-react-markdown';
+import { useQueryState } from '@/utils/useQueryState';
+
+const AddAsNewTab = ({ code }: { code: string }) => {
+  const { setQuery } = useQueryState('q', '');
+  return <>
+    <span className="py-2 cursor-pointer italic text-sm font-bold text-blue-500 hover:text-blue-400" onClick={() => {
+      setQuery(code);
+    }}>Try this SQL in the SQL Runner</span>
+  </>
+}
 /**
  * Parses markdown text and removes incomplete tokens to prevent partial rendering
  * of links, images, bold, and italic formatting during streaming.
@@ -307,16 +317,16 @@ const components: Options['components'] = {
       code = children;
     }
     return (
-      <CodeBlock
-        className={cn('h-auto', className)}
-        code={code}
-        language={language}
-      >
-        <CodeBlockCopyButton
-          onCopy={() => console.log('Copied code to clipboard')}
-          onError={() => console.error('Failed to copy code to clipboard')}
-        />
-      </CodeBlock>
+      <>
+        <div className='flex flex-col'>
+          <CodeBlock
+            className={cn('h-auto', className)}
+            code={code}
+            language={language}
+          />
+          <AddAsNewTab code={code} />
+        </div>
+      </>
     );
   },
 };
