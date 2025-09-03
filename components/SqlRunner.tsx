@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { debounce } from "@/lib/utils";
 import { useQueryState } from "@/utils/useQueryState";
@@ -42,10 +42,8 @@ export default function SqlRunner() {
                 }
         };
 
-        const debouncedRunQuery = useMemo(() => debounce(runQuery, 300), [])
-
         useEffect(() => {
-                results.length === 0 ? runQuery(query) : debouncedRunQuery(query);
+                runQuery(query);
         }, [query])
 
         return (
@@ -57,7 +55,7 @@ export default function SqlRunner() {
                                                 height="200px"
                                                 defaultLanguage="sql"
                                                 value={query}
-                                                onChange={(value) => handleChange(value || "")}
+                                                onChange={debounce((value) => handleChange(value || ""), 300)}
                                                 theme="vs-dark"
                                                 options={{
                                                         minimap: { enabled: false },
