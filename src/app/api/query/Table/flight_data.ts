@@ -1,3 +1,4 @@
+
 const tableName = "flights";
 // Hardcoded schema definition
 const schema = [
