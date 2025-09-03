@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 import moment from "moment";
-import { tableName, schema, data } from "./Table/data";
+import * as table1 from "./Table/data";
+import * as table2 from "./Table/filght_data";
 
 let db: sqlite3.Database | null = null;
 let initialized = false;
@@ -11,7 +12,11 @@ export function getDB() {
         }
 
         if (!initialized) {
-                initDB({ tableName, schema, data });
+                db!.serialize(() => {
+                        db!.run("DROP TABLE IF EXISTS data");
+                });
+                initDB(table1);
+                initDB(table2);
                 initialized = true;
         }
 
@@ -26,7 +31,6 @@ function initDB({ tableName, data, schema }: { tableName: string, data: object[]
         const colDefs = schema.map((c) => `"${c.name}" ${c.type}`).join(", ");
 
         db!.serialize(() => {
-                db!.run("DROP TABLE IF EXISTS data");
                 db!.run(`CREATE TABLE ${tableName} (${colDefs})`);
 
                 const columns = schema.map((c) => `"${c.name}"`);

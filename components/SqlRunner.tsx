@@ -35,7 +35,7 @@ export default function SqlRunner() {
                                 setResults([])
                                 setError(data.error);
                         } else {
-                                setResults(data.rows);
+                                setResults(data.rows || []);
                         }
                 } catch (err: any) {
                         setError(err.message);
@@ -79,8 +79,12 @@ export default function SqlRunner() {
                                                 <div className="text-2xl">Syntax Error in your SQL Query</div>
                                                 <div className="text-lg ">{error}</div>
                                         </div>
-                                        :
-                                        <VirtualizedTable rows={results || []} />}
+                                        : results.length
+                                                ?
+                                                <VirtualizedTable rows={results || []} />
+                                                : <div className="w-full h-full flex items-center justify-center flex-col gap-1">
+                                                        <div className="text-2xl">No results for the SQL query</div>
+                                                </div>}
                         </div>
                 </div>
         );
