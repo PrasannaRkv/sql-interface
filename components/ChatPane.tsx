@@ -77,6 +77,9 @@ export default function ChatPane() {
 
                                 {/* Messages */}
                                 <div className="flex-1 overflow-y-auto px-4 space-y-2">
+                                        {messages.length === 0 && <div className="flex text-xl w-full items-center justify-center pt-6">
+                                                Ask the AI Assistant for support with your questions.
+                                        </div>}
                                         <div className="flex flex-col gap-2">
                                                 {messages.map((m, i) => {
                                                         const isLast = i === messages.length - 1;
