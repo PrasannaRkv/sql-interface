@@ -18,7 +18,7 @@ export default function SqlRunner() {
                 setQuery(query);
         };
 
-        const { data, error, run } = useFetch<{ rows: any[]; error?: string }>(
+        const { data, error, loading, run } = useFetch<{ rows: any[]; error?: string }>(
                 "/api/query",
                 { method: "POST", skip: true }
         );
@@ -70,16 +70,16 @@ export default function SqlRunner() {
                                                 <div className="text-2xl">Syntax Error in your SQL Query</div>
                                                 <div className="text-lg ">{error}</div>
                                         </div>
-                                        : results ?
+                                        : (loading || !results) ?
+                                                <div className="w-full h-full flex items-center justify-center flex-col gap-1">
+                                                        <div className="text-2xl">Loading...</div>
+                                                </div> :
                                                 results.length > 0
                                                         ?
                                                         <VirtualizedTable rows={results || []} />
                                                         : <div className="w-full h-full flex items-center justify-center flex-col gap-1">
                                                                 <div className="text-2xl">No results for the SQL query</div>
                                                         </div>
-                                                : <div className="w-full h-full flex items-center justify-center flex-col gap-1">
-                                                        <div className="text-2xl">Loading...</div>
-                                                </div>
                                 }
 
                         </div>
