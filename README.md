@@ -3,9 +3,66 @@
 A lightweight, interactive SQL runner built with **Next.js**, **React**, and **shadcn/ui**.  
 This project combines a familiar SQL editing experience with advanced features like AI-assisted query generation, saved queries, and result table virtualization.  
 
-### See live on https://sql-interface-orcin.vercel.app
+### See live on https://sql-interface-orcin.vercel.app/
 
 See Filters prefilled: [Prefilled 1](https://sql-interface-orcin.vercel.app/?q=U0VMRUNUIAogICAgZC5maXJzdF9uYW1lLCAKICAgIGQubGFzdF9uYW1lLCAKICAgIGQuY291bnRyeSwgCiAgICBkLmVtYWlsLCAKICAgIGQuYW1vdW50LAogICAgKFNFTEVDVCBTVU0oYW1vdW50KSBGUk9NIGRhdGEgV0hFUkUgaXNfYWN0aXZlID0gMSkgQVMgdG90YWxfYWN0aXZlX2Ftb3VudApGUk9NIAogICAgZGF0YSBkCldIRVJFIAogICAgZC5pc19hY3RpdmUgPSAxCk9SREVSIEJZIAogICAgZC5hbW91bnQgREVTQzsK) | [Prefilled Link 2](https://sql-interface-orcin.vercel.app/?q=U0VMRUNUIGZsaWdodF9udW1iZXIsIGRlcGFydHVyZV9jb3VudHJ5LCBhcnJpdmFsX2NvdW50cnkKRlJPTSBmbGlnaHRzCldIRVJFIChkZXBhcnR1cmVfY291bnRyeSA9ICdDaGluYScgQU5EIGFycml2YWxfY291bnRyeSA9ICdSdXNzaWEnKQogICBPUiAoZGVwYXJ0dXJlX2NvdW50cnkgPSAnUnVzc2lhJyBBTkQgYXJyaXZhbF9jb3VudHJ5ID0gJ0NoaW5hJyk7Cg%3D%3D)
+
+---
+
+## 🛠️ Tech Stack
+- **Next.js**
+- **React + TypeScript**
+- **shadcn/ui** for modern UI components
+- **Tailwind CSS** for styling
+- **OpenAI API** for AI assistant
+- **React Virtuoso** for virtualized tables
+
+---
+## Lighthouse score
+
+![readme/lighthouse.png](readme/lighthouse.png)
+
+---
+
+## 📂 Project Structure
+
+```
+/app
+/api/query         → API route for SQL execution
+/components        → UI components (editor, table, popovers, etc.)
+/providers         → Context providers (SQLProvider, AI context)
+/utils             → Reusable hooks (useQueryState, useFetch, useSafeLocalStorage)
+```
+
+---
+
+## 🚦 Getting Started
+
+```bash
+# Clone repository
+git clone <repo-url>
+
+# Install dependencies
+yarn install
+
+# Add environment variables
+echo "OPENAI_API_KEY=your-key-here" > .env.local
+
+# Run dev server
+yarn dev
+
+App runs at http://localhost:3000.
+```
+
+---
+
+### 📌 Roadmap
+- Multi-tab query editor
+- Schema explorer panel
+- Query history with timestamps
+- Export results in multiple formats (XLSX, Parquet)
+- Improved AI schema training
+- Collaboration features (share queries with team)
 
 ---
 
@@ -15,48 +72,62 @@ See Filters prefilled: [Prefilled 1](https://sql-interface-orcin.vercel.app/?q=U
 - Write and execute SQL queries directly in the browser.
 - Results are displayed in a fast, scrollable, **virtualized table** that supports large datasets.
 
-![alt text](readme/sqlrunner.png)
+![readme/sqlrunner.png](readme/sqlrunner.png)
+
+---
 
 ### 💾 Saved Queries
 - Save frequently used queries to **localStorage**.
 - Quickly re-run saved queries using a simple popover interface.
 - Delete saved queries with a single click.
 
-![alt text](readme/savedsql.png)
+![readme/savedsql.png](readme/savedsql.png)
+
+---
 
 ### 🧠 AI Assistant
 - Generate queries with natural language using an **AI-powered assistant**.
 - Assistant is **context-aware** — it understands your schema and suggests valid queries.
 - Intelligent markdown + streaming response support for smooth AI interaction.
 
-![alt text](readme/AI1.gif)
+![readme/AI1.gif](readme/AI1.gif)
 
-![alt text](readme/AI2.gif)
+---
+
+![readme/AI2.gif](readme/AI2.gif)
+
+---
 
 ### 🔗 URL Hashing
 - Queries are **encoded into the URL** (via base64) for easy sharing and persistence.
 - Refresh or share the link and your query state is preserved.
 
-![alt text](readme/urlhashing.png)
+![readme/urlhashing.png](readme/urlhashing.png)
+
+---
 
 ### ⚡ Result Table Virtualization
 - Handles thousands of rows without performance issues.
 - Smooth scrolling and instant rendering using virtualization.
 
-![alt text](readme/virtualized.png)
+![readme/virtualized.png](readme/virtualized.png)
+
+---
 
 ### 📤 Export & Copy
 - **Copy results** as CSV or JSON with one click.
 - **Download results** as CSV or JSON for offline use.
 - Perfect for integrating query results into reports or other workflows.
 
-![alt text](readme/copyexport.png)
+![readme/copyexport.png](readme/copyexport.png)
+
+---
 
 ### 🎯 Context-Aware AI Solutions
 - Schema is passed into the AI assistant for **better, contextually correct queries**.
 - Supports “Use Query” action to directly insert AI-generated SQL into the runner.
 
-![alt text](readme/contentaware.png)
+![readme/contentaware.png](readme/contentaware.png)
 
 ---
 
@@ -114,57 +185,5 @@ Two sample tables are preloaded for you to explore and query with both SQL and t
 | AA101         | American Air | JFK               | New York       | USA              | 08:30 AM       | LHR             | London       | UK              | 7              | John Doe       | 34            | M               | USA                  | 12A         |
 | LH404         | Lufthansa    | FRA               | Frankfurt      | Germany          | 01:15 PM       | JFK             | New York     | USA             | 9              | Anna Schmidt   | 28            | F               | Germany              | 22C         |
 | AI202         | Air India    | DEL               | New Delhi      | India            | 11:45 PM       | DXB             | Dubai        | UAE             | 3              | Raj Patel      | 41            | M               | India                | 18B         |
-
----
-
-## 🛠️ Tech Stack
-- **Next.js**
-- **React + TypeScript**
-- **shadcn/ui** for modern UI components
-- **Tailwind CSS** for styling
-- **OpenAI API** for AI assistant
-- **React Virtuoso** for virtualized tables
-
----
-
-## 📂 Project Structure
-
-```
-/app
-/api/query         → API route for SQL execution
-/components        → UI components (editor, table, popovers, etc.)
-/providers         → Context providers (SQLProvider, AI context)
-/utils             → Reusable hooks (useQueryState, useFetch, useSafeLocalStorage)
-```
-
----
-
-## 🚦 Getting Started
-
-```bash
-# Clone repository
-git clone <repo-url>
-
-# Install dependencies
-yarn install
-
-# Add environment variables
-echo "OPENAI_API_KEY=your-key-here" > .env.local
-
-# Run dev server
-yarn dev
-
-App runs at http://localhost:3000.
-```
-
----
-
-### 📌 Roadmap
-- Multi-tab query editor
-- Schema explorer panel
-- Query history with timestamps
-- Export results in multiple formats (XLSX, Parquet)
-- Improved AI schema training
-- Collaboration features (share queries with team)
 
 ---
