@@ -16,7 +16,7 @@ const AddAsNewTab = ({ code }: { code: string }) => {
   return <>
     <span className="py-2 cursor-pointer italic text-sm font-bold text-blue-500 hover:text-blue-400" onClick={() => {
       setQuery(code);
-    }}>Try this SQL in the SQL Runner</span>
+    }}>Use this SQL in the SQL Runner</span>
   </>
 }
 /**

@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import clsx from "clsx";
 import { Textarea } from "./ui/textarea";
 import { Response } from "./ui/ai/response";
-
-// import { Response } from '@/src/Components/ui/shadcn-io/ai/response';
 
 const useTypingEffect = (text: string, skip = false) => {
         const [displayed, setDisplayed] = useState(skip ? text : "")
@@ -30,13 +27,20 @@ const useTypingEffect = (text: string, skip = false) => {
 }
 
 const TypingResponse = ({ text, skip }: { text: string, skip: boolean }) => {
+        const ref = useRef<HTMLDivElement>(null);
         const content = useTypingEffect(text, skip)
-        return <Response>
+        useEffect(() => {
+                ref.current?.scrollIntoView();
+        }, [content])
+        return <>
+                <Response>
                 {content}
-        </Response>
+                </Response>
+                <div ref={ref} />
+        </>
 }
 
-export default function ChatPane() {
+export default function ChatPane({ query }: { query: string }) {
         const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
         const [input, setInput] = useState("");
         const [loading, setLoading] = useState(false);
@@ -50,12 +54,14 @@ export default function ChatPane() {
                 setInput("");
                 setLoading(true);
 
+                const payload = [...messages, { role: "user", content: `My current query is "${query}". \n ${input}` }];
+
                 try {
                         setLastMessage('');
                         const res = await fetch("/api/chat", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ messages: newMessages }),
+                                body: JSON.stringify({ messages: payload }),
                         });
 
                         const data = await res.json();

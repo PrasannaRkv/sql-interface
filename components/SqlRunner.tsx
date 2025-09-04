@@ -77,7 +77,7 @@ export default function SqlRunner() {
                                                         setQuery(sql);
                                                 }}
                                         />
-                                        <ChatPane />
+                                        <ChatPane query={query} />
                                 </div>
                         </div>
                         <div className="flex-1 border rounded overflow-hidden">
