@@ -7,10 +7,10 @@ import VirtualizedTable from "@/components/VirtualizedTable";
 import { Button } from "@/components/ui/button";
 import ChatPane from "@/components/ChatPane";
 import SavedQueries from "./SavedQueries";
+import { useFetch } from "@/utils/useFetch";
 
 export default function SqlRunner() {
-        const [results, setResults] = useState([]);
-        const [error, setError] = useState<string | null>(null);
+        const [results, setResults] = useState<any[]>([]);
 
         const { query, setQuery } = useQueryState("q", "SELECT * FROM data;"); // stored in ?q=<base64>
 
@@ -19,33 +19,26 @@ export default function SqlRunner() {
                 setQuery(query);
         };
 
-        const runQuery = async (query: string) => {
-                if (!query) {
-                        return;
-                }
-                setError(null);
-                try {
-                        const res = await fetch("/api/query", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ sql: query }),
-                        });
+        const { data, error, loading, run } = useFetch<{ rows: any[]; error?: string }>(
+                "/api/query",
+                { method: "POST", skip: true }
+        );
 
-                        const data = await res.json();
+        useEffect(() => {
+                if (query) {
+                        run({ sql: query });
+                }
+        }, [query, run]);
+
+        useEffect(() => {
+                if (data) {
                         if (data.error) {
-                                setResults([])
-                                setError(data.error);
+                                setResults([]);
                         } else {
                                 setResults(data.rows || []);
                         }
-                } catch (err: any) {
-                        setError(err.message);
                 }
-        };
-
-        useEffect(() => {
-                runQuery(query);
-        }, [query])
+        }, [data]);
 
         return (
                 <div className="px-8 py-4 h-screen flex flex-col gap-4">
@@ -67,7 +60,7 @@ export default function SqlRunner() {
                                 </div>
                                 <div className="flex gap-2">
                                         <Button
-                                                onClick={() => runQuery(query)}
+                                                onClick={() => { run({ sql: query }) }}
                                         >
                                                 Run Query
                                         </Button>
