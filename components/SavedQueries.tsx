@@ -23,9 +23,6 @@ export default function SavedQueries({
 
   return (
     <Popover>
-      <Button variant="outline" className="flex items-center gap-1">
-        Saved
-      </Button>
       <PopoverTrigger asChild>
         <Button variant="outline" className="flex items-center gap-1">
           Saved
@@ -33,9 +30,6 @@ export default function SavedQueries({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-2 space-y-1 w-[300px]">
-        {savedSqls.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No saved queries</p>
-        ) : (
           <ul className="max-h-[400px] overflow-y-auto space-y-1">
               {!isAlreadySaved && <><li
                 key={'current'}
@@ -67,8 +61,7 @@ export default function SavedQueries({
                 </button>
               </li>
             ))}
-          </ul>
-        )}
+        </ul>
       </PopoverContent>
     </Popover>
   );
