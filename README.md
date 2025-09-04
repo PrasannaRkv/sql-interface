@@ -3,7 +3,7 @@
 A lightweight, interactive SQL runner built with **Next.js**, **React**, and **shadcn/ui**.  
 This project combines a familiar SQL editing experience with advanced features like AI-assisted query generation, saved queries, and result table virtualization.  
 
-### See live on https://sql-interface-orcin.vercel.app/
+### See live on https://sql-interface-orcin.vercel.app
 
 See Filters prefilled: [Prefilled 1](https://sql-interface-orcin.vercel.app/?q=U0VMRUNUIAogICAgZC5maXJzdF9uYW1lLCAKICAgIGQubGFzdF9uYW1lLCAKICAgIGQuY291bnRyeSwgCiAgICBkLmVtYWlsLCAKICAgIGQuYW1vdW50LAogICAgKFNFTEVDVCBTVU0oYW1vdW50KSBGUk9NIGRhdGEgV0hFUkUgaXNfYWN0aXZlID0gMSkgQVMgdG90YWxfYWN0aXZlX2Ftb3VudApGUk9NIAogICAgZGF0YSBkCldIRVJFIAogICAgZC5pc19hY3RpdmUgPSAxCk9SREVSIEJZIAogICAgZC5hbW91bnQgREVTQzsK) | [Prefilled Link 2](https://sql-interface-orcin.vercel.app/?q=U0VMRUNUIGZsaWdodF9udW1iZXIsIGRlcGFydHVyZV9jb3VudHJ5LCBhcnJpdmFsX2NvdW50cnkKRlJPTSBmbGlnaHRzCldIRVJFIChkZXBhcnR1cmVfY291bnRyeSA9ICdDaGluYScgQU5EIGFycml2YWxfY291bnRyeSA9ICdSdXNzaWEnKQogICBPUiAoZGVwYXJ0dXJlX2NvdW50cnkgPSAnUnVzc2lhJyBBTkQgYXJyaXZhbF9jb3VudHJ5ID0gJ0NoaW5hJyk7Cg%3D%3D)
 
