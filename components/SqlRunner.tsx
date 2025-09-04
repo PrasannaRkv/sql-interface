@@ -6,6 +6,7 @@ import { useQueryState } from "@/utils/useQueryState";
 import VirtualizedTable from "@/components/VirtualizedTable";
 import { Button } from "@/components/ui/button";
 import ChatPane from "@/components/ChatPane";
+import SavedQueries from "./SavedQueries";
 
 export default function SqlRunner() {
         const [results, setResults] = useState([]);
@@ -70,6 +71,12 @@ export default function SqlRunner() {
                                         >
                                                 Run Query
                                         </Button>
+                                        <SavedQueries
+                                                current={query}
+                                                onSelect={function (sql: string): void {
+                                                        setQuery(sql);
+                                                }}
+                                        />
                                         <ChatPane />
                                 </div>
                         </div>
