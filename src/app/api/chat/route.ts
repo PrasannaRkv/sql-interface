@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     const reply = completion.choices[0]?.message?.content ?? "I couldn’t generate SQL.";
 
-    return NextResponse.json({ reply });
+    return NextResponse.json({ reply: reply + ' \n\nWould you like help with something else?' });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
