@@ -10,7 +10,6 @@ import SavedQueries from "./SavedQueries";
 import { useFetch } from "@/utils/useFetch";
 
 export default function SqlRunner() {
-        const [results, setResults] = useState<any[]>([]);
 
         const { query, setQuery } = useQueryState("q", "SELECT * FROM data;"); // stored in ?q=<base64>
 
@@ -19,26 +18,18 @@ export default function SqlRunner() {
                 setQuery(query);
         };
 
-        const { data, error, loading, run } = useFetch<{ rows: any[]; error?: string }>(
+        const { data, error, run } = useFetch<{ rows: any[]; error?: string }>(
                 "/api/query",
                 { method: "POST", skip: true }
         );
+
+        const results = data?.rows;
 
         useEffect(() => {
                 if (query) {
                         run({ sql: query });
                 }
         }, [query, run]);
-
-        useEffect(() => {
-                if (data) {
-                        if (data.error) {
-                                setResults([]);
-                        } else {
-                                setResults(data.rows || []);
-                        }
-                }
-        }, [data]);
 
         return (
                 <div className="px-8 py-4 h-screen flex flex-col gap-4">
@@ -79,12 +70,18 @@ export default function SqlRunner() {
                                                 <div className="text-2xl">Syntax Error in your SQL Query</div>
                                                 <div className="text-lg ">{error}</div>
                                         </div>
-                                        : results.length
-                                                ?
-                                                <VirtualizedTable rows={results || []} />
+                                        : results ?
+                                                results.length > 0
+                                                        ?
+                                                        <VirtualizedTable rows={results || []} />
+                                                        : <div className="w-full h-full flex items-center justify-center flex-col gap-1">
+                                                                <div className="text-2xl">No results for the SQL query</div>
+                                                        </div>
                                                 : <div className="w-full h-full flex items-center justify-center flex-col gap-1">
-                                                        <div className="text-2xl">No results for the SQL query</div>
-                                                </div>}
+                                                        <div className="text-2xl">Loading...</div>
+                                                </div>
+                                }
+
                         </div>
                 </div>
         );
